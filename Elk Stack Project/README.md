@@ -9,7 +9,7 @@ These files have been tested and used to generate a live ELK deployment on Azure
   - [Ansible Files](/Ansible)
 
 This document contains the following details:
-- Description of the Topolog.
+- Description of the Topology
 - Access Policies
 - ELK Configuration
   - Beats in Use
