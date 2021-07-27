@@ -57,11 +57,12 @@ Machines within the network can only be accessed by the _Jump Box Provisioner_.
 
 A summary of the access policies in place can be found in the table below.
 
-| Name     | Publicly Accessible | Allowed IP Addresses |
-|----------|---------------------|----------------------|
-| Jump Box | No.                 | 104.173.98.15        |
-|          |                     |                      |
-|          |                     |                      |
+| Name     | Publicly Accessible | Allowed IP Addresses  |
+|----------|---------------------|-----------------------|
+| Jump Box | No                  | 104.173.98.15         |
+|  Web 1   | No                  | 10.0.0.4              |
+|  Web 2   | No                  | 10.0.0.4              |
+|Elk Server| No                  |10.0.0.4, 104.173.98.15|
 
 ### Elk Configuration
 
@@ -75,7 +76,7 @@ The playbook implements the following tasks:
 
 The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
-![TODO: Update the path with the name of your screenshot of docker ps output](Images/docker_ps_output.png)
+[docker ps](Images/Project1-1.jpg)
 
 ### Target Machines & Beats
 This ELK server is configured to monitor the following machines:
