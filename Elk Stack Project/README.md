@@ -2,7 +2,7 @@
 
 The files in this repository were used to configure the network depicted below.
 
-[Network Diagram](Images/NetworkDiagram.png)
+![Network Diagram](Images/NetworkDiagram.png)
 
 These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the yml file may be used to install only certain pieces of it, such as Filebeat.
 
@@ -76,7 +76,7 @@ The playbook implements the following tasks:
 
 The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
-[docker ps](Images/Project1-1.jpg)
+![docker ps](Images/Project1-1.jpg)
 
 ### Target Machines & Beats
 This ELK server is configured to monitor the following machines:
