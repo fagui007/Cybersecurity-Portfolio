@@ -27,7 +27,7 @@ Load balancing ensures that the application will be highly *available*, in addit
   - What is the advantage of a jump box?
      - *The advantage of a jump box is that security settings only have to be implemented on the jump box rather than implementing it on all machines. Additionally, this allows the network to be hidden behind a single gateway, the jump box.*
 
-Integrating an ELK server allows users to easily monitor the vulnerable VMs for changes to the _____ and system _____.
+Integrating an ELK server allows users to easily monitor the vulnerable VMs for changes to the data and system logs.
 - What does Filebeat watch for?
   - Filebeat collects data about the file system and log events.
 - What does Metricbeat record?
@@ -66,8 +66,7 @@ A summary of the access policies in place can be found in the table below.
 
 ### Elk Configuration
 
-Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
-- *instead of manually configuring new machines that are added to the resource group, we can use Ansible to run playbooks that will configure the machines for us. This will save time and effort when expanding a network.*
+Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because *instead of manually configuring new machines that are added to the resource group, we can use Ansible to run playbooks that will configure the machines for us. This will save time and effort when expanding a network.*
 
 The playbook ([install-elk](/Ansible/install-elk.yml)) implements the following tasks:
 - The first three dashes denote that the file is a YAML file while the rest of the portion specifies which group the playbook will affect:
@@ -166,11 +165,7 @@ SSH into the control node and follow the steps below:
  [elk]
  10.1.0.4 ansible_python_interpreter=/usr/bin/python3
 ```
-- Run the playbook (`ansible-playbook install-elk.yml`), and navigate to ____ to check that the installation worked as expected.
-
-_TODO: Answer the following questions to fill in the blanks:_
-- _Which file is the playbook? Where do you copy it?_
-- _Which file do you update to make Ansible run the playbook on a specific machine? How do I specify which machine to install the ELK server on versus which to install Filebeat on?_
-- _Which URL do you navigate to in order to check that the ELK server is running?
-
-_As a **Bonus**, provide the specific commands the user will need to run to download the playbook, update the files, etc._
+- Run the playbook (`ansible-playbook install-elk.yml`), and navigate to the ELK server and run `sudo docker ps` to check that the installation worked as expected. If successful, the following should appear:
+![docker ps](Images/Project1-1.jpg)
+- Another method of checking that the installation worked as expected would be by navigating to the following: http://[your.ELK-VM.External.IP]:5601/app/kibana
+![Kibana](Images/Project1-2.jpg)
