@@ -29,9 +29,9 @@ Load balancing ensures that the application will be highly *available*, in addit
 
 Integrating an ELK server allows users to easily monitor the vulnerable VMs for changes to the _____ and system _____.
 - What does Filebeat watch for?
-  - Filebeat collects data about the file system.
+  - Filebeat collects data about the file system and log events.
 - What does Metricbeat record?
-  - Metricbeat collects machine metrics, such as uptime.
+  - Metricbeat collects machine metrics and statistics, such as uptime.
 
 The configuration details of each machine may be found below.
 _Note: Use the [Markdown Table Generator](http://www.tablesgenerator.com/markdown_tables) to add/remove values from the table_.
@@ -69,10 +69,69 @@ A summary of the access policies in place can be found in the table below.
 Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
 - *instead of manually configuring new machines that are added to the resource group, we can use Ansible to run playbooks that will configure the machines for us. This will save time and effort when expanding a network.*
 
-The playbook implements the following tasks:
-- _TODO: In 3-5 bullets, explain the steps of the ELK installation play. E.g., install Docker; download image; etc._
-- ...
-- ...
+The playbook ([install-elk](/Ansible/install-elk.yml)) implements the following tasks:
+- The first three dashes denote that the file is a YAML file while the rest of the portion specifies which group the playbook will affect:
+```
+---
+- name: Configure Elk VM with Docker
+  hosts: elk
+  remote_user: azadmin
+  become: true
+  tasks: 
+```
+- This portion installs the services noted: docker.io, python3-pip, and docker:
+```
+    - name: Install docker.io
+      apt:
+        update_cache: yes
+        force_apt_get: yes
+        name: docker.io
+        state: present
+
+    - name: Install python3-pip
+      apt:
+        force_apt_get: yes
+        name: python3-pip
+        state: present
+
+    - name: Install Docker module
+      pip:
+        name: docker
+        state: present
+```
+- This portion increases the system memory being used:
+```
+    - name: Increase virtual memory
+      command: sysctl -w vm.max_map_count=262144
+
+    - name: Use more memory
+      sysctl:
+        name: vm.max_map_count
+        value: '262144'
+        state: present
+        reload: yes
+```
+- This portion downloads the ELK container and publishes the ports that ELK will run through:
+```
+    - name: download and launch a docker elk container
+      docker_container:
+        name: elk
+        image: sebp/elk:761
+        state: started
+        restart_policy: always
+        # Please list the ports that ELK runs on
+        published_ports:
+          -  5601:5601
+          -  9200:9200
+          -  5044:5044
+```
+- This portion enables docker to launch everytime the VM is booted:
+```
+    - name: Enable service docker on boot
+      systemd:
+        name: docker
+        enabled: yes
+```
 
 The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
@@ -80,21 +139,34 @@ The following screenshot displays the result of running `docker ps` after succes
 
 ### Target Machines & Beats
 This ELK server is configured to monitor the following machines:
-- _TODO: List the IP addresses of the machines you are monitoring_
+- Web 1: 10.0.0.5
+- Web 2: 10.0.0.6
 
 We have installed the following Beats on these machines:
-- _TODO: Specify which Beats you successfully installed_
+- Filebeat
+- Metricbeat
 
 These Beats allow us to collect the following information from each machine:
-- _TODO: In 1-2 sentences, explain what kind of data each beat collects, and provide 1 example of what you expect to see. E.g., `Winlogbeat` collects Windows logs, which we use to track user logon events, etc._
+- Filebeat monitors log files and collects log events that are indexed by either Elasticsearch or Logstash.
+- Metricbeat takes metrics and statistics from the operating system and from the services that are running and forwards the outputs to either Elasticsearch or Logstash.
 
 ### Using the Playbook
 In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned: 
 
 SSH into the control node and follow the steps below:
-- Copy the _____ file to _____.
-- Update the _____ file to include...
-- Run the playbook, and navigate to ____ to check that the installation worked as expected.
+- Copy the [ELK](/Ansible/install-elk.yml) YAML file to the ansible container, specifically into /etc/ansible.
+- Update the hosts file to include your ELK server, it should resemble the following:
+```
+ # /etc/ansible/hosts
+ [webservers]
+ 10.0.0.4 ansible_python_interpreter=/usr/bin/python3
+ 10.0.0.5 ansible_python_interpreter=/usr/bin/python3
+ 10.0.0.6 ansible_python_interpreter=/usr/bin/python3
+
+ [elk]
+ 10.1.0.4 ansible_python_interpreter=/usr/bin/python3
+```
+- Run the playbook (`ansible-playbook install-elk.yml`), and navigate to ____ to check that the installation worked as expected.
 
 _TODO: Answer the following questions to fill in the blanks:_
 - _Which file is the playbook? Where do you copy it?_
